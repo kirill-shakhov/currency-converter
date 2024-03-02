@@ -1,4 +1,4 @@
-import { Props, SelectOption, SelectValue, UiInputDropdownEmits } from "./UiInputDropdown.types.ts";
+import { Props, SelectValue, UiInputDropdownEmits } from "./UiInputDropdown.types.ts";
 import { computed, ref } from "vue";
 
 export function useUiInputDropdown(props: Props, emit: UiInputDropdownEmits) {
