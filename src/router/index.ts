@@ -1,6 +1,5 @@
-import { createRouter, createWebHistory, RouteLocationNormalized } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import modules from "../modules/index.ts";
-import { store } from "../store";
 
 
 const router = createRouter({
