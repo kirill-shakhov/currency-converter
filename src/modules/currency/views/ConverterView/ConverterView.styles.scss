@@ -1,0 +1,26 @@
+.converter-view {
+
+}
+
+.converter-view__container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  @include lg{
+    flex-direction: row;
+  }
+}
+
+.currencies-view__group {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.converter-view__input {
+  @include lg {
+    max-width: 120px;
+  }
+}

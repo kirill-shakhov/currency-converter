@@ -1,0 +1,58 @@
+<template>
+  <div class="converter-view">
+    <div class="converter-view__container">
+      <div class="currencies-view__group">
+        <ui-input
+            v-model:value="data.firstCurrencyValue"
+            label="From"
+            name="inputSearchValue"
+            placeholder="Value"
+            class="converter-view__input"
+            type="text"
+            number-format
+            @input="handleFirstInputChange"
+        />
+
+        <ui-input-dropdown
+            v-model:value="data.firstDropdownValue"
+            name="first_launch_date"
+            :options="firstValueDateOptions"
+            @change="handleFirstInputChange"
+        />
+      </div>
+
+      <div class="currencies-view__group">
+        <ui-input
+            v-model:value="data.secondCurrencyValue"
+            label="To"
+            name="inputSearchValue"
+            placeholder="Value"
+            class="converter-view__input"
+            type="text"
+            number-format
+            @input="handleSecondInputChange"
+        />
+
+        <ui-input-dropdown
+            v-model:value="data.secondDropdownValue"
+            name="second_launch_date"
+            :options="secondValueDateOptions"
+            @change="handleSecondInputChange"
+        />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { UiInput } from "../../../../shared/components/UiInput/index.ts";
+import { UiInputDropdown } from "../../../../shared/components/UiInputDropdown/index.ts";
+import { useConverterView } from "./ConverterView.composables.ts";
+
+const { firstValueDateOptions, secondValueDateOptions, data, handleFirstInputChange, handleSecondInputChange } = useConverterView();
+
+
+</script>
+
+<style lang="scss">
+</style>
