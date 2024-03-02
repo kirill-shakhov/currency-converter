@@ -9,7 +9,7 @@ export interface SelectOption {
 export interface Props {
     label?: string;
     value: string;
-    options?: SelectOption[];
+    options: SelectOption[];
     name: string;
     readonly?: boolean;
 }
