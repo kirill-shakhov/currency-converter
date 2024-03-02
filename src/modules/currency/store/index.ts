@@ -1,20 +1,24 @@
 import CurrencyService from "../services/CurrencyService.ts";
-import { CurrencyState } from "./types.ts";
-import { ActionTree, GetterTree, MutationTree } from "vuex";
+import { ConvertCurrencyPayload, CurrencyState } from "./types.ts";
+import { ActionContext, ActionTree, GetterTree, MutationTree } from "vuex";
 import { RootState } from "../../../store/types.ts";
+import { ConvertCurrencyResponse, GetCurrenciesResponse } from "../types";
 
-const state:CurrencyState = {
+const state: CurrencyState = {
     currencies: {},
     convertedCurrency: {}
 };
 
-const getters:GetterTree<CurrencyState, RootState> = {
-    allCurrencies: (state) => state.currencies,
-    convertedCurrency: (state) => state.convertedCurrency
+const getters: GetterTree<CurrencyState, RootState> = {
+    allCurrencies: (state: CurrencyState) => state.currencies,
+    convertedCurrency: (state: CurrencyState) => state.convertedCurrency
 };
 
-const actions:ActionTree<CurrencyState, RootState> = {
-    async getCurrencies({ commit }, baseCurrency = 'RUB') {
+const actions: ActionTree<CurrencyState, RootState> = {
+    async getCurrencies(
+        { commit }: ActionContext<CurrencyState, RootState>,
+        baseCurrency = 'RUB'
+    ) {
         try {
             const currencyService = new CurrencyService();
             const currencies = await currencyService.getCurrencies(baseCurrency);
@@ -23,7 +27,9 @@ const actions:ActionTree<CurrencyState, RootState> = {
             console.error("Error getting currencies:", error);
         }
     },
-    async convertCurrencies({ commit }, { from, to, amount } ) {
+    async convertCurrencies(
+        { commit }: ActionContext<CurrencyState, RootState>,
+        { from, to, amount }:ConvertCurrencyPayload) {
         try {
             const currencyService = new CurrencyService();
             const convertedCurrency = await currencyService.convertCurrencies(from, to, amount);
@@ -34,11 +40,11 @@ const actions:ActionTree<CurrencyState, RootState> = {
     }
 };
 
-const mutations:MutationTree<CurrencyState> = {
-    setCurrencies(state, currencies) {
+const mutations: MutationTree<CurrencyState> = {
+    setCurrencies(state: CurrencyState, currencies: GetCurrenciesResponse) {
         state.currencies = currencies;
     },
-    setConvertedCurrency(state, convertedCurrency) {
+    setConvertedCurrency(state: CurrencyState, convertedCurrency: ConvertCurrencyResponse) {
         state.convertedCurrency = convertedCurrency;
     },
 };
