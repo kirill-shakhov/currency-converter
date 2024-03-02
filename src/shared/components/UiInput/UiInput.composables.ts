@@ -7,17 +7,18 @@ export function useInput(props: InputProps, emit: InputEmits) {
     const lastValidValue = ref(props.value);
 
     watch(() => props.value, (value) => {
-        if (!props.numberFormat || isValidNumberInput(value)) {
-            lastValidValue.value = value;
-            innerValue.value = value;
-        }
-        else {
 
+        const stringValue = value !== undefined ? value.toString() : '';
+
+        if (!props.numberFormat || isValidNumberInput(stringValue)) {
+            lastValidValue.value = stringValue;
+            innerValue.value = stringValue;
+        } else {
             innerValue.value = lastValidValue.value;
         }
     });
 
-    const changeValue = (event: InputEvent) => {
+    const changeValue = (event: Event) => {
         const target = event.target as HTMLInputElement;
         const currentValue = target.value;
 
