@@ -1,0 +1,22 @@
+@import "media-helpers";
+@import "../variables/media";
+
+@mixin phone {
+  @include min($phone-bp) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @include min($tablet-bp) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @include min($desktop-bp) {
+    @content;
+  }
+}
+
+

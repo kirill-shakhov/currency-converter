@@ -1,0 +1,21 @@
+.app-container {
+  --gap: 8px;
+
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 calc(2 * var(--gap));
+
+  @include tablet {
+    --gap: 16px;
+  }
+
+  @include lg {
+    max-width: 1120px;
+  }
+}
+
+.app-container__content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
