@@ -38,7 +38,7 @@
 
 import { UiInput } from "../../../../shared/components/UiInput/index.ts";
 import { UiInputDropdown } from "../../../../shared/components/UiInputDropdown/index.ts";
-import CurrencyList from "../../components/CurrencyList/CurrencyList.vue";
+import { CurrencyList } from "../../components/CurrencyList/index.ts";
 import { useCurrenciesView } from "./CurrenciesView.composables.ts";
 
 const {
