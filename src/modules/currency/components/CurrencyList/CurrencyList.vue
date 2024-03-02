@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import { CurrencyListProps } from "./CurrencyList.types.ts";
 
-const props = defineProps<CurrencyListProps>();
+defineProps<CurrencyListProps>();
 
 </script>
 
