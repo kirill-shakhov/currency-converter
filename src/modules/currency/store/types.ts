@@ -5,3 +5,9 @@ export interface CurrencyState {
     convertedCurrency: ConvertCurrencyResponse | {};
 
 }
+
+export interface ConvertCurrencyPayload {
+    from: string;
+    to: string;
+    amount: number;
+}
