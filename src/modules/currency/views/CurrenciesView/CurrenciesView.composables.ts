@@ -1,14 +1,12 @@
-import { useStore } from "vuex";
-import { key } from "../../../../store";
 import { SelectOption } from "../../../../shared/components/UiInputDropdown";
 import { computed, onMounted, reactive, ref, watch } from "vue";
 import { Currency, Data } from "./CurrenciesView.types.ts";
-import { GetCurrenciesResponse } from "../../types";
 import { handleError } from "../../../../utils/handleError.ts";
+import { useStore } from '@/store';
+import { GetCurrenciesResponse } from '@/services/api/controllers';
 
 export function useCurrenciesView() {
-    const store = useStore(key)
-
+    const store = useStore();
 
     const launchDateOptions: SelectOption[] = [{ text: 'RUB', value: 'RUB' }];
     const currenciesList: Currency[] = [];
@@ -20,7 +18,6 @@ export function useCurrenciesView() {
         inputSearchValue: '',
         launch_date: launchDateOptions[0].value.toString()
     })
-
 
     async function fetchData() {
         try {

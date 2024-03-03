@@ -1,12 +1,11 @@
-import { useStore } from "vuex";
-import { key } from "../../../../store";
 import { SelectOption } from "../../../../shared/components/UiInputDropdown";
 import {  onMounted, reactive, ref } from "vue";
 import { handleError } from "../../../../utils/handleError.ts";
-import { ConvertCurrencyResponse } from "../../types";
+import { useStore } from '@/store';
+import { ConvertCurrencyResponse } from '@/services/api/controllers';
 
 export function useConverterView() {
-    const store = useStore(key)
+    const store = useStore();
 
     const firstValueDateOptions: SelectOption[] = [{ text: 'RUB', value: 'RUB' }];
     const secondValueDateOptions: SelectOption[] = [{ text: 'USD', value: 'USD' }];
