@@ -45,6 +45,4 @@ const { innerValue, changeValue, rootClasses } = useInput(props, emit);
 
 </script>
 
-<style lang="scss">
-
-</style>
+<style src="./UiInput.styles.scss" lang="scss"></style>
