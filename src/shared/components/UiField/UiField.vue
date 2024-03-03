@@ -18,3 +18,5 @@ withDefaults(defineProps<Props>(), {
   label: '',
 });
 </script>
+
+<style src="./UiField.styles.scss" lang="scss"></style>
