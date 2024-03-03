@@ -1,6 +1,6 @@
 <template>
   <div class="converter-view">
-    <div class="converter-view__container">
+    <div v-if="!isFetchDataLoading" class="converter-view__container">
       <div class="currencies-view__group">
         <ui-input
             v-model:value="data.firstCurrencyValue"
@@ -41,6 +41,13 @@
         />
       </div>
     </div>
+
+    <div
+        v-if="isFetchDataLoading"
+        style="display: flex; justify-content: center"
+    >
+      loading...
+    </div>
   </div>
 </template>
 
@@ -54,6 +61,8 @@ const {
   firstValueDateOptions,
   secondValueDateOptions,
   data,
+  isFetchDataLoading,
+
   handleFirstInputChange,
   handleSecondInputChange,
   fetchData,

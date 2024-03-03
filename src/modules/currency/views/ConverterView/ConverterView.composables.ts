@@ -1,6 +1,6 @@
-import { SelectOption } from "../../../../shared/components/UiInputDropdown";
+import { SelectOption } from "@/shared/components/UiInputDropdown";
 import { reactive, ref } from "vue";
-import { handleError } from "../../../../utils/handleError.ts";
+import { handleError } from "@/utils/handleError.ts";
 import { useStore } from '@/store';
 import { ConvertCurrencyResponse } from '@/services/api/controllers';
 import { useRequestWrapper } from '@/shared/composables';
@@ -18,14 +18,46 @@ export function useConverterView() {
         firstDropdownValue: firstValueDateOptions[0].value,
         secondDropdownValue: secondValueDateOptions[0].value,
         firstCurrencyValue: 0,
-        secondCurrencyValue: 0,
+        secondCurrencyValue: 1,
 
     })
 
-    const [fetchData] = useRequestWrapper(async () => {
+    const convertCurrency = async (from: string, to: string, amount: number, isReverse = false) => {
+        if (updating) return;
+        updating = true;
+
+        try {
+            await store.dispatch('currency/convertCurrencies', { from, to, amount });
+
+            const conversionResponse: ConvertCurrencyResponse = store.getters['currency/convertedCurrency'];
+            if (conversionResponse && conversionResponse.result) {
+                const resultValue = conversionResponse.result[to];
+                if (isReverse) {
+                    data.firstCurrencyValue = resultValue;
+                } else {
+                    data.secondCurrencyValue = resultValue;
+                }
+            }
+        } catch (error) {
+            handleError(error);
+        } finally {
+            updating = false;
+        }
+    };
+
+    const [fetchData, isFetchDataLoading] = useRequestWrapper(async () => {
         await store.dispatch('currency/getCurrencies');
 
+        await convertCurrency(data.secondDropdownValue, data.firstDropdownValue, data.secondCurrencyValue, true);
+
+
         const currencies = store.getters['currency/allCurrencies'];
+
+        const conversionResponse: ConvertCurrencyResponse = store.getters['currency/convertedCurrency'];
+
+        if (conversionResponse && conversionResponse.result) {
+            data.firstCurrencyValue = conversionResponse.result[data.firstDropdownValue];
+        }
 
         for (const key of Object.keys(currencies['results'])) {
 
@@ -47,70 +79,20 @@ export function useConverterView() {
         isInitialLoad.value = false;
     });
 
-    const convertFromFirstToSecond = async () => {
-        if (updating) return;
-        updating = true;
-
-        try {
-            await store.dispatch('currency/convertCurrencies', {
-                from: data.firstDropdownValue,
-                to: data.secondDropdownValue,
-                amount: data.firstCurrencyValue,
-            });
-
-            const conversionResponse: ConvertCurrencyResponse = store.getters['currency/convertedCurrency'];
-
-            // data.secondCurrencyValue = response.convertedAmount;
-
-            if (conversionResponse && conversionResponse.result) {
-                console.log(conversionResponse.result[data.secondDropdownValue])
-                data.secondCurrencyValue = conversionResponse.result[data.secondDropdownValue];
-
-            }
-
-        } catch (error) {
-            handleError(error);
-        }
-
-        updating = false;
-    };
-
-    const convertFromSecondToFirst = async () => {
-        if (updating) return;
-        updating = true;
-
-        // Здесь логика для конвертации из второго поля в первое
-        try {
-            await store.dispatch('currency/convertCurrencies', {
-                from: data.secondDropdownValue,
-                to: data.firstDropdownValue,
-                amount: data.secondCurrencyValue,
-            });
-
-            const conversionResponse: ConvertCurrencyResponse = store.getters['currency/convertedCurrency'];
-
-            if (conversionResponse && conversionResponse.result) {
-                data.firstCurrencyValue = conversionResponse.result[data.firstDropdownValue];
-            }
-        } catch (error) {
-            handleError(error);
-        }
-
-        updating = false;
-    };
-
     const handleFirstInputChange = async () => {
-        await convertFromFirstToSecond();
+        await convertCurrency(data.firstDropdownValue, data.secondDropdownValue, data.firstCurrencyValue);
     };
 
     const handleSecondInputChange = async () => {
-        await convertFromSecondToFirst();
+        await convertCurrency(data.firstDropdownValue, data.secondDropdownValue, data.firstCurrencyValue);
     };
+
 
     return {
         firstValueDateOptions,
         secondValueDateOptions,
         data,
+        isFetchDataLoading,
 
         handleFirstInputChange,
         handleSecondInputChange,
