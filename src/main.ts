@@ -5,7 +5,7 @@ import App from './App.vue'
 import router from './router/index.ts'
 import { store, key }  from './store';
 
-import clickOutside from './directives/clickOutsideDirective.ts';
+import { clickOutside } from '@/directives';
 
 const app = createApp(App);
 app.directive('click-outside', clickOutside);

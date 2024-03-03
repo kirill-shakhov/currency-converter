@@ -1,6 +1,6 @@
 import { ObjectDirective } from 'vue';
 
-const clickOutside: ObjectDirective = {
+export const clickOutside: ObjectDirective = {
     beforeMount(el, binding) {
         el.clickOutsideEvent = function(event: MouseEvent) {
             if (!(el === event.target || el.contains(event.target as Node))) {
@@ -15,4 +15,4 @@ const clickOutside: ObjectDirective = {
 
 };
 
-export default clickOutside;
+
