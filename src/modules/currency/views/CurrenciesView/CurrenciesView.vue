@@ -19,12 +19,12 @@
     </div>
 
     <currency-list
-        v-if="!isFetchDataLoading"
+        v-if="!isFetchDataLoading && !loading"
         :currencies="filteredCurrencies"
     />
 
     <div
-        v-if="isFetchDataLoading"
+        v-if="isFetchDataLoading || loading"
         style="display: flex; justify-content: center"
     >
       loading...
@@ -46,6 +46,7 @@ const {
   currentCurrency,
   filteredCurrencies,
   fetchData,
+  loading
 } = useCurrenciesView()
 
 onMounted(fetchData);

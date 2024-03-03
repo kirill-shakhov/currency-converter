@@ -42,7 +42,7 @@ export function useCurrenciesView() {
         isInitialLoad.value = false;
     });
 
-    watch(() => currentCurrency, async (newVal, oldValue) => {
+    watch(() => currentCurrency.value, async (newVal, oldValue) => {
         if (isInitialLoad.value || newVal === oldValue) return;
 
         try {
@@ -86,6 +86,7 @@ export function useCurrenciesView() {
     return {
         currenciesOptions,
         isFetchDataLoading,
+        loading,
         inputSearchValue,
         currentCurrency,
         filteredCurrencies,
