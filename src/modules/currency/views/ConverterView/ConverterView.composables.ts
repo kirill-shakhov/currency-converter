@@ -1,8 +1,9 @@
 import { SelectOption } from "../../../../shared/components/UiInputDropdown";
-import {  onMounted, reactive, ref } from "vue";
+import { reactive, ref } from "vue";
 import { handleError } from "../../../../utils/handleError.ts";
 import { useStore } from '@/store';
 import { ConvertCurrencyResponse } from '@/services/api/controllers';
+import { useRequestWrapper } from '@/shared/composables';
 
 export function useConverterView() {
     const store = useStore();
@@ -10,7 +11,6 @@ export function useConverterView() {
     const firstValueDateOptions: SelectOption[] = [{ text: 'RUB', value: 'RUB' }];
     const secondValueDateOptions: SelectOption[] = [{ text: 'USD', value: 'USD' }];
 
-    const loading = ref(false);
     const isInitialLoad = ref(true);
     let updating = false;
 
@@ -22,45 +22,30 @@ export function useConverterView() {
 
     })
 
+    const [fetchData] = useRequestWrapper(async () => {
+        await store.dispatch('currency/getCurrencies');
 
-    async function fetchData() {
-        try {
-            loading.value = true
+        const currencies = store.getters['currency/allCurrencies'];
 
-            await store.dispatch('currency/getCurrencies');
+        for (const key of Object.keys(currencies['results'])) {
 
-            const currencies = store.getters['currency/allCurrencies'];
-
-            for (const key of Object.keys(currencies['results'])) {
-
-                if (key !== "RUB") {
-                    firstValueDateOptions.push({
-                        text: key,
-                        value: key
-                    });
-                }
-
-                if (key !== "USD") {
-                    secondValueDateOptions.push({
-                        text: key,
-                        value: key
-                    });
-                }
+            if (key !== "RUB") {
+                firstValueDateOptions.push({
+                    text: key,
+                    value: key
+                });
             }
 
-            loading.value = false;
-            isInitialLoad.value = false;
-
-        } catch (e: unknown) {
-            handleError(e)
-            loading.value = false
+            if (key !== "USD") {
+                secondValueDateOptions.push({
+                    text: key,
+                    value: key
+                });
+            }
         }
-    }
 
-
-    onMounted(async () => {
-        await fetchData();
-    })
+        isInitialLoad.value = false;
+    });
 
     const convertFromFirstToSecond = async () => {
         if (updating) return;
@@ -128,6 +113,8 @@ export function useConverterView() {
         data,
 
         handleFirstInputChange,
-        handleSecondInputChange
+        handleSecondInputChange,
+
+        fetchData,
     }
 }

@@ -48,6 +48,16 @@
 import { useConverterView } from "./ConverterView.composables.ts";
 import { UiInput } from '@/shared/components/UiInput';
 import { UiInputDropdown } from '@/shared/components/UiInputDropdown';
+import { onMounted } from 'vue';
 
-const { firstValueDateOptions, secondValueDateOptions, data, handleFirstInputChange, handleSecondInputChange } = useConverterView();
+const {
+  firstValueDateOptions,
+  secondValueDateOptions,
+  data,
+  handleFirstInputChange,
+  handleSecondInputChange,
+  fetchData,
+} = useConverterView();
+
+onMounted(fetchData);
 </script>
