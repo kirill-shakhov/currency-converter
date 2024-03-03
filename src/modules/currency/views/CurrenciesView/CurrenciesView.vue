@@ -34,12 +34,10 @@
 </template>
 
 <script setup lang="ts">
-
-
-import { UiInput } from "../../../../shared/components/UiInput/index.ts";
-import { UiInputDropdown } from "../../../../shared/components/UiInputDropdown/index.ts";
-import { CurrencyList } from "../../components/CurrencyList/index.ts";
 import { useCurrenciesView } from "./CurrenciesView.composables.ts";
+import { UiInput } from '@/shared/components/UiInput';
+import { UiInputDropdown } from '@/shared/components/UiInputDropdown';
+import { CurrencyList } from '@/modules/currency/components/CurrencyList';
 
 const {
   launchDateOptions,
@@ -47,11 +45,9 @@ const {
   data,
   filteredCurrencies
 } = useCurrenciesView()
-
 </script>
 
 <style lang="scss">
-
 .currencies-view__navigation {
   display: flex;
   justify-content: space-between;

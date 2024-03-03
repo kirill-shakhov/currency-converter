@@ -45,14 +45,9 @@
 </template>
 
 <script setup lang="ts">
-import { UiInput } from "../../../../shared/components/UiInput/index.ts";
-import { UiInputDropdown } from "../../../../shared/components/UiInputDropdown/index.ts";
 import { useConverterView } from "./ConverterView.composables.ts";
+import { UiInput } from '@/shared/components/UiInput';
+import { UiInputDropdown } from '@/shared/components/UiInputDropdown';
 
 const { firstValueDateOptions, secondValueDateOptions, data, handleFirstInputChange, handleSecondInputChange } = useConverterView();
-
-
 </script>
-
-<style lang="scss">
-</style>
