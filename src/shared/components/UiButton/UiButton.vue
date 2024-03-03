@@ -21,5 +21,5 @@ const { rootClasses } = useUiButton(props);
 
 </script>
 
-<style lang="scss">
+<style src="./UiButton.styles.scss" lang="scss">
 </style>
