@@ -3,7 +3,7 @@
     <div class="currencies-view__navigation">
       <div class="currencies-view__input-wrap">
         <ui-input
-            v-model:value="data.inputSearchValue"
+            v-model:value="inputSearchValue"
             name="inputSearchValue"
             placeholder="Search"
             type="search"
@@ -11,10 +11,9 @@
       </div>
 
       <ui-input-dropdown
-          v-if="data.launch_date"
-          v-model:value="data.launch_date"
+          v-model:value="currentCurrency"
           name="launch_date"
-          :options="launchDateOptions"
+          :options="currenciesOptions"
           label="Currency"
       />
     </div>
@@ -38,13 +37,18 @@ import { useCurrenciesView } from "./CurrenciesView.composables.ts";
 import { UiInput } from '@/shared/components/UiInput';
 import { UiInputDropdown } from '@/shared/components/UiInputDropdown';
 import { CurrencyList } from '@/modules/currency/components/CurrencyList';
+import { onMounted } from 'vue';
 
 const {
-  launchDateOptions,
+  currenciesOptions,
   loading,
-  data,
-  filteredCurrencies
+  inputSearchValue,
+  currentCurrency,
+  filteredCurrencies,
+  fetchData,
 } = useCurrenciesView()
+
+onMounted(fetchData);
 </script>
 
 <style lang="scss">

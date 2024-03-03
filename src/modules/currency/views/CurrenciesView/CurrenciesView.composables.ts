@@ -1,23 +1,21 @@
 import { SelectOption } from "../../../../shared/components/UiInputDropdown";
-import { computed, onMounted, reactive, ref, watch } from "vue";
-import { Currency, Data } from "./CurrenciesView.types.ts";
+import { computed, ref, watch } from "vue";
 import { handleError } from "../../../../utils/handleError.ts";
 import { useStore } from '@/store';
 import { GetCurrenciesResponse } from '@/services/api/controllers';
+import { Currency } from '@/modules/currency/static/types/index.ts';
 
 export function useCurrenciesView() {
     const store = useStore();
 
-    const launchDateOptions: SelectOption[] = [{ text: 'RUB', value: 'RUB' }];
+    const currenciesOptions: SelectOption[] = [{ text: 'RUB', value: 'RUB' }];
     const currenciesList: Currency[] = [];
 
     const isInitialLoad = ref(true);
     const loading = ref(false);
 
-    const data = reactive<Data>({
-        inputSearchValue: '',
-        launch_date: launchDateOptions[0].value.toString()
-    })
+    const inputSearchValue = ref('');
+    const currentCurrency = ref(currenciesOptions[0].value);
 
     async function fetchData() {
         try {
@@ -36,39 +34,33 @@ export function useCurrenciesView() {
                 });
                 if (key !== "RUB") {
 
-                    launchDateOptions.push({
+                    currenciesOptions.push({
                         text: key,
                         value: key
                     });
                 }
             }
 
-            loading.value = false;
             isInitialLoad.value = false;
-
         } catch (e: unknown) {
             handleError(e)
-            loading.value = false
+        } finally {
+            loading.value = false;
         }
     }
 
-
-    onMounted(async () => {
-        await fetchData();
-    })
-
-    watch(() => data.launch_date, async (newVal, oldValue) => {
+    watch(() => currentCurrency, async (newVal, oldValue) => {
         if (isInitialLoad.value || newVal === oldValue) return;
 
         try {
             loading.value = true;
-            data.inputSearchValue = ''
+            inputSearchValue.value = ''
             await store.dispatch('currency/getCurrencies', newVal);
 
             updateCurrenciesList();
-            loading.value = false;
         } catch (e: unknown) {
             handleError(e)
+        } finally {
             loading.value = false;
         }
     });
@@ -88,21 +80,23 @@ export function useCurrenciesView() {
 
 
     const filteredCurrencies = computed<Currency[]>(() => {
-        if (data.inputSearchValue.trim() === '') {
+        if (inputSearchValue.value.trim() === '') {
             return currenciesList;
         }
 
         return currenciesList.filter(currency =>
-            currency.currency.toLowerCase().includes(data.inputSearchValue.toLowerCase())
+            currency.currency.toLowerCase().includes(inputSearchValue.value.toLowerCase())
         );
     });
 
 
     return {
-        launchDateOptions,
+        currenciesOptions,
         loading,
-        data,
+        inputSearchValue,
+        currentCurrency,
+        filteredCurrencies,
 
-        filteredCurrencies
+        fetchData,
     }
 }
