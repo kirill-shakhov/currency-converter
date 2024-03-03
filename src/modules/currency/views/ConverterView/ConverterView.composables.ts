@@ -22,7 +22,12 @@ export function useConverterView() {
 
     })
 
-    const convertCurrency = async (from: string, to: string, amount: number, isReverse = false) => {
+    const convertCurrency = async (
+        from: string,
+        to: string,
+        amount: number,
+        isReverse = false) => {
+
         if (updating) return;
         updating = true;
 
