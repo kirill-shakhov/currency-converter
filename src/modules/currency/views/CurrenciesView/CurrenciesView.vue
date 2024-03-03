@@ -19,12 +19,12 @@
     </div>
 
     <currency-list
-        v-if="!loading"
+        v-if="!isFetchDataLoading"
         :currencies="filteredCurrencies"
     />
 
     <div
-        v-if="loading"
+        v-if="isFetchDataLoading"
         style="display: flex; justify-content: center"
     >
       loading...
@@ -41,7 +41,7 @@ import { onMounted } from 'vue';
 
 const {
   currenciesOptions,
-  loading,
+  isFetchDataLoading,
   inputSearchValue,
   currentCurrency,
   filteredCurrencies,

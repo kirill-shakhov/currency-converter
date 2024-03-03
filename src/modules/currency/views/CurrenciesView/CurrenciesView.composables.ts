@@ -4,6 +4,7 @@ import { handleError } from "../../../../utils/handleError.ts";
 import { useStore } from '@/store';
 import { GetCurrenciesResponse } from '@/services/api/controllers';
 import { Currency } from '@/modules/currency/static/types/index.ts';
+import { useRequestWrapper } from '@/shared/composables';
 
 export function useCurrenciesView() {
     const store = useStore();
@@ -17,37 +18,29 @@ export function useCurrenciesView() {
     const inputSearchValue = ref('');
     const currentCurrency = ref(currenciesOptions[0].value);
 
-    async function fetchData() {
-        try {
-            loading.value = true
+    const [fetchData, isFetchDataLoading] = useRequestWrapper(async () => {
+        await store.dispatch('currency/getCurrencies');
 
-            await store.dispatch('currency/getCurrencies');
+        const currencies = store.getters['currency/allCurrencies'];
 
-            const currencies = store.getters['currency/allCurrencies'];
+        for (const key of Object.keys(currencies['results'])) {
+            const value = currencies['results'][key];
 
-            for (const key of Object.keys(currencies['results'])) {
-                const value = currencies['results'][key];
+            currenciesList.push({
+                currency: key,
+                value: value
+            });
+            if (key !== "RUB") {
 
-                currenciesList.push({
-                    currency: key,
-                    value: value
+                currenciesOptions.push({
+                    text: key,
+                    value: key
                 });
-                if (key !== "RUB") {
-
-                    currenciesOptions.push({
-                        text: key,
-                        value: key
-                    });
-                }
             }
-
-            isInitialLoad.value = false;
-        } catch (e: unknown) {
-            handleError(e)
-        } finally {
-            loading.value = false;
         }
-    }
+
+        isInitialLoad.value = false;
+    });
 
     watch(() => currentCurrency, async (newVal, oldValue) => {
         if (isInitialLoad.value || newVal === oldValue) return;
@@ -92,7 +85,7 @@ export function useCurrenciesView() {
 
     return {
         currenciesOptions,
-        loading,
+        isFetchDataLoading,
         inputSearchValue,
         currentCurrency,
         filteredCurrencies,
