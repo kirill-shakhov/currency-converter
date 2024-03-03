@@ -63,5 +63,5 @@ const {
 } = useUiInputDropdown(props, emit);
 </script>
 
-<style lang="scss">
+<style src="./UiInputDropdown.styles.scss" lang="scss">
 </style>
