@@ -1,6 +1,6 @@
 import { ref, watch, computed } from 'vue';
 import { InputEmits, InputProps } from './UiInput.types.ts';
-import { isValidNumberInput } from "../../../utils/isValidNumberInput.ts";
+import { isValidNumberInput } from "@/utils/isValidNumberInput.ts";
 
 export function useInput(props: InputProps, emit: InputEmits) {
     const innerValue = ref(props.value);
