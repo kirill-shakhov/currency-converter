@@ -19,7 +19,6 @@ export function useConverterView() {
         secondDropdownValue: secondValueDateOptions[0].value,
         firstCurrencyValue: 0,
         secondCurrencyValue: 1,
-
     })
 
     const convertCurrency = async (
@@ -85,12 +84,20 @@ export function useConverterView() {
     });
 
     const handleFirstInputChange = async () => {
-        await convertCurrency(data.firstDropdownValue, data.secondDropdownValue, data.firstCurrencyValue);
+        if (data.firstCurrencyValue.toString() !== '') {
+            await convertCurrency(data.firstDropdownValue, data.secondDropdownValue, data.firstCurrencyValue);
+        } else {
+            data.secondCurrencyValue = 0;
+        }
     };
 
     const handleSecondInputChange = async () => {
-        await convertCurrency(data.firstDropdownValue, data.secondDropdownValue, data.firstCurrencyValue);
+        await convertCurrency(data.secondDropdownValue, data.firstDropdownValue, data.secondCurrencyValue, true)
     };
+
+    const handleSecondDropdownChange = async () => {
+        await convertCurrency(data.firstDropdownValue, data.secondDropdownValue, data.firstCurrencyValue);
+    }
 
 
     return {
@@ -101,6 +108,7 @@ export function useConverterView() {
 
         handleFirstInputChange,
         handleSecondInputChange,
+        handleSecondDropdownChange,
 
         fetchData,
     }

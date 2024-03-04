@@ -37,7 +37,7 @@
             v-model:value="data.secondDropdownValue"
             name="second_launch_date"
             :options="secondValueDateOptions"
-            @change="handleSecondInputChange"
+            @change="handleSecondDropdownChange"
         />
       </div>
     </div>
@@ -66,6 +66,7 @@ const {
   handleFirstInputChange,
   handleSecondInputChange,
   fetchData,
+  handleSecondDropdownChange
 } = useConverterView();
 
 onMounted(fetchData);
