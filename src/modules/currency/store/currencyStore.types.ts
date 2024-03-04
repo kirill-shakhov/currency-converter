@@ -8,5 +8,5 @@ export interface CurrencyState {
 export interface ConvertCurrencyPayload {
     from: string;
     to: string;
-    amount: number;
+    amount: string;
 }

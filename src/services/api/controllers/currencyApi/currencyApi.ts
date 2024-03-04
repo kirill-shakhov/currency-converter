@@ -24,7 +24,7 @@ class CurrencyApi {
         return data;
     }
 
-    async convertCurrencies(from: string, to: string, amount: number): Promise<ConvertCurrencyResponse> {
+    async convertCurrencies(from: string, to: string, amount: string): Promise<ConvertCurrencyResponse> {
         const { data } = await $api.get<ConvertCurrencyResponse>('/convert', {
             params: {
                 from,
