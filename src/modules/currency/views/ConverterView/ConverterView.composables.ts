@@ -4,6 +4,7 @@ import { handleError } from "@/utils/handleError.ts";
 import { useStore } from '@/store';
 import { ConvertCurrencyResponse } from '@/services/api/controllers';
 import { useRequestWrapper } from '@/shared/composables';
+import debounce from 'debounce-fn';
 
 export function useConverterView() {
     const store = useStore();
@@ -49,6 +50,8 @@ export function useConverterView() {
         }
     };
 
+    const debouncedFetchConversion = debounce(convertCurrency, { wait:500 });
+
     const [fetchData, isFetchDataLoading] = useRequestWrapper(async () => {
         await store.dispatch('currency/getCurrencies');
 
@@ -85,7 +88,7 @@ export function useConverterView() {
 
     const handleFirstInputChange = async () => {
         if (data.firstCurrencyValue !== '') {
-            await convertCurrency(data.firstDropdownValue, data.secondDropdownValue, data.firstCurrencyValue);
+            await debouncedFetchConversion(data.firstDropdownValue, data.secondDropdownValue, data.firstCurrencyValue);
         } else {
             data.secondCurrencyValue = '';
         }
@@ -93,14 +96,14 @@ export function useConverterView() {
 
     const handleSecondInputChange = async () => {
         if (data.secondCurrencyValue !== '') {
-            await convertCurrency(data.secondDropdownValue, data.firstDropdownValue, data.secondCurrencyValue, true)
+            await debouncedFetchConversion(data.secondDropdownValue, data.firstDropdownValue, data.secondCurrencyValue, true)
         } else {
             data.firstCurrencyValue = '';
         }
     };
 
     const handleSecondDropdownChange = async () => {
-        await convertCurrency(data.firstDropdownValue, data.secondDropdownValue, data.firstCurrencyValue);
+        await debouncedFetchConversion(data.firstDropdownValue, data.secondDropdownValue, data.firstCurrencyValue);
     }
 
 
