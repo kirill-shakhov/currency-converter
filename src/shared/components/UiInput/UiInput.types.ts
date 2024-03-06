@@ -10,7 +10,7 @@ export interface InputProps {
     readonly?: boolean;
     iconRight?: boolean;
     icon?: Icon;
-    numberFormat?: boolean;
+    validator?: Function
 }
 
 export interface InputEmits {
