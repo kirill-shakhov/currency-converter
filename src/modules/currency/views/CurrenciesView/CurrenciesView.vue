@@ -6,6 +6,7 @@
             v-model:value="inputSearchValue"
             name="inputSearchValue"
             placeholder="Search"
+            :validator="isEnglishLetters"
             type="search"
         />
       </div>
@@ -38,6 +39,7 @@ import { UiInput } from '@/shared/components/UiInput';
 import { UiInputDropdown } from '@/shared/components/UiInputDropdown';
 import { CurrencyList } from '@/modules/currency/components/CurrencyList';
 import { onMounted } from 'vue';
+import { isEnglishLetters } from "@/helpers";
 
 const {
   currenciesOptions,
