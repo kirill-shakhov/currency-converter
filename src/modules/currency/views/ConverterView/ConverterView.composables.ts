@@ -50,7 +50,7 @@ export function useConverterView() {
         }
     };
 
-    const debouncedFetchConversion = debounce(convertCurrency, { wait:300 });
+    const debouncedFetchConversion = debounce(convertCurrency, { wait:200 });
 
     const [fetchData, isFetchDataLoading] = useRequestWrapper(async () => {
         await store.dispatch('currency/getCurrencies');
