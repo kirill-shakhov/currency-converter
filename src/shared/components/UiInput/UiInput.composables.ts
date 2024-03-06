@@ -1,6 +1,5 @@
 import { ref, watch, computed } from 'vue';
 import { InputEmits, InputProps } from './UiInput.types.ts';
-import { isValidNumberInput } from "@/utils/isValidNumberInput.ts";
 
 export function useInput(props: InputProps, emit: InputEmits) {
     const innerValue = ref(props.value);
@@ -10,19 +9,21 @@ export function useInput(props: InputProps, emit: InputEmits) {
 
         const stringValue = value !== undefined ? value.toString() : '';
 
-        if (!props.numberFormat || isValidNumberInput(stringValue)) {
+
+        if (props.validator && props.validator(value)) {
             lastValidValue.value = stringValue;
             innerValue.value = stringValue;
         } else {
             innerValue.value = lastValidValue.value;
         }
+
     });
 
     const changeValue = (event: Event) => {
         const target = event.target as HTMLInputElement;
         const currentValue = target.value;
 
-        if (!props.numberFormat || isValidNumberInput(currentValue)) {
+        if (props.validator && props.validator(currentValue)) {
             lastValidValue.value = currentValue;
             innerValue.value = currentValue;
             emit('update:value', currentValue);
