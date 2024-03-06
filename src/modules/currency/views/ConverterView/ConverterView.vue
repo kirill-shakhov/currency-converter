@@ -9,7 +9,7 @@
             placeholder="Value"
             class="converter-view__input"
             type="text"
-            number-format
+            :validator="isValidNumberInput"
             @input="handleFirstInputChange"
         />
 
@@ -29,7 +29,7 @@
             placeholder="Value"
             class="converter-view__input"
             type="text"
-            number-format
+            :validator="isValidNumberInput"
             @input="handleSecondInputChange"
         />
 
@@ -56,6 +56,7 @@ import { useConverterView } from "./ConverterView.composables.ts";
 import { UiInput } from '@/shared/components/UiInput';
 import { UiInputDropdown } from '@/shared/components/UiInputDropdown';
 import { onMounted } from 'vue';
+import { isValidNumberInput } from "@/helpers";
 
 const {
   firstValueDateOptions,
