@@ -21,9 +21,11 @@
         />
       </div>
 
-      <ui-button @click="swap">
-        swap
-      </ui-button>
+      <div class="currencies-view__group">
+        <ui-button @click="swap">
+          swap
+        </ui-button>
+      </div>
 
       <div class="currencies-view__group">
         <ui-input
@@ -62,6 +64,7 @@ import { UiInputDropdown } from '@/shared/components/UiInputDropdown';
 import { onMounted } from 'vue';
 import { isValidNumberInput } from "@/helpers";
 import { UiButton } from "@/shared/components/UiButton";
+import { UiIcon } from "@/shared/components/UiIcon";
 
 const {
   firstValueDateOptions,
