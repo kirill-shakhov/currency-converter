@@ -50,7 +50,7 @@ export function useConverterView() {
         }
     };
 
-    const debouncedFetchConversion = debounce(convertCurrency, { wait:200 });
+    const debouncedFetchConversion = debounce(convertCurrency, { wait: 200 });
 
     const [fetchData, isFetchDataLoading] = useRequestWrapper(async () => {
         await store.dispatch('currency/getCurrencies');
@@ -106,6 +106,10 @@ export function useConverterView() {
         await debouncedFetchConversion(data.firstDropdownValue, data.secondDropdownValue, data.firstCurrencyValue);
     }
 
+    const swap = async () => {
+        [data.firstDropdownValue, data.secondDropdownValue] = [data.secondDropdownValue, data.firstDropdownValue];
+        await convertCurrency(data.firstDropdownValue, data.secondDropdownValue, data.firstCurrencyValue);
+    }
 
     return {
         firstValueDateOptions,
@@ -117,6 +121,7 @@ export function useConverterView() {
         handleSecondInputChange,
         handleSecondDropdownChange,
 
+        swap,
         fetchData,
     }
 }
