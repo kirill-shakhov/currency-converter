@@ -9,26 +9,23 @@ export function useInput(props: InputProps, emit: InputEmits) {
 
         const stringValue = value !== undefined ? value.toString() : '';
 
-
-        if (props.validator && props.validator(value)) {
+        if (props.validator ? props.validator(stringValue) : true) {
             lastValidValue.value = stringValue;
             innerValue.value = stringValue;
         } else {
             innerValue.value = lastValidValue.value;
         }
-
     });
 
     const changeValue = (event: Event) => {
         const target = event.target as HTMLInputElement;
         const currentValue = target.value;
 
-        if (props.validator && props.validator(currentValue)) {
+        if (props.validator ? props.validator(currentValue) : true) {
             lastValidValue.value = currentValue;
             innerValue.value = currentValue;
             emit('update:value', currentValue);
         } else {
-
             innerValue.value = lastValidValue.value;
         }
     };

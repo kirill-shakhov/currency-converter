@@ -21,6 +21,10 @@
         />
       </div>
 
+      <ui-button @click="swap">
+        swap
+      </ui-button>
+
       <div class="currencies-view__group">
         <ui-input
             v-model:value="data.secondCurrencyValue"
@@ -57,6 +61,7 @@ import { UiInput } from '@/shared/components/UiInput';
 import { UiInputDropdown } from '@/shared/components/UiInputDropdown';
 import { onMounted } from 'vue';
 import { isValidNumberInput } from "@/helpers";
+import { UiButton } from "@/shared/components/UiButton";
 
 const {
   firstValueDateOptions,
@@ -67,7 +72,8 @@ const {
   handleFirstInputChange,
   handleSecondInputChange,
   fetchData,
-  handleSecondDropdownChange
+  handleSecondDropdownChange,
+  swap
 } = useConverterView();
 
 onMounted(fetchData);
