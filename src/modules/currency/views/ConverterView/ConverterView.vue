@@ -64,7 +64,6 @@ import { UiInputDropdown } from '@/shared/components/UiInputDropdown';
 import { onMounted } from 'vue';
 import { isValidNumberInput } from "@/helpers";
 import { UiButton } from "@/shared/components/UiButton";
-import { UiIcon } from "@/shared/components/UiIcon";
 
 const {
   firstValueDateOptions,
